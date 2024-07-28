@@ -77,6 +77,7 @@ export const logOutController = () => (res, req) => {
 };
 
 export const getMyProfile = async (res, req) => {
+  
   res.status(200).json({
     success: true,
     user: req.user,

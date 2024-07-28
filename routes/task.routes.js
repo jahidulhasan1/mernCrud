@@ -1,15 +1,20 @@
 import express from "express";
-import { createPost, deletePost, readPost, updatePost } from "../controllers/task.controller.js";
+import {
+  createPost,
+  deletePost,
+  readPost,
+  updatePost,
+} from "../controllers/task.controller.js";
 import { isAuthenTicated } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.post('/create', isAuthenTicated,createPost);
- 
-router.get('/read',isAuthenTicated, readPost);
+router.post("/create", isAuthenTicated, createPost);
 
-router.put('/update/:id',isAuthenTicated, updatePost);
+router.get("/read", isAuthenTicated, readPost);
 
-router.delete('/delete/:id', isAuthenTicated,deletePost);
+router.put("/update/:id", isAuthenTicated, updatePost);
+
+router.delete("/delete/:id", isAuthenTicated, deletePost);
 
 export default router;

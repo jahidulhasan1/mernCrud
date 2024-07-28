@@ -15,15 +15,18 @@ export const createPost = async (req, res, next) => {
     message: "Task created successfully",
   });
 };
-export const readPost = (req, res, next) => {
+export const readPost =async (req, res, next) => {
   const userId = req.user._id;
-  const tasks = Task.find({ user: userId });
+  const tasks = await Task.find({ user: userId });
 
   res.status(200).json({
     success: true,
     tasks,
   });
 };
+
+
+
 export const updatePost = async (req, res) => {
   const { id } = req.params;
   const task = await Task.findById(id);
