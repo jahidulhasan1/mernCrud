@@ -6,22 +6,26 @@ import Errorhandler from "../utils/errorHandler.js";
 // register
 // someone comes again
 export const signUpController = async (req, res) => {
-  const { name, email, password } = req.body;
+  try {
+    const { name, email, password } = req.body;
 
-  let user = await User.findOne({ email });
-  // ! change later
-  if (user) return next(new Errorhandler("User already exists", 400));
+    let user = await User.findOne({ email });
+    // ! change later
+    if (user) return next(new Errorhandler("User already exists", 400));
 
-  const salt = bcrypt.genSaltSync(10);
-  const hashedPass = bcrypt.hashSync(password, salt);
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPass = bcrypt.hashSync(password, salt);
 
-  user = await User.create({
-    name,
-    email,
-    password: hashedPass,
-  });
+    user = await User.create({
+      name,
+      email,
+      password: hashedPass,
+    });
 
-  sendCookie(user, res, "Signup successfully", 201);
+    sendCookie(user, res, "Signup successfully", 201);
+  } catch (error) {
+    next(error);
+  }
 };
 
 // someone new sign in
@@ -42,8 +46,7 @@ export const logInController = async (req, res, next) => {
       user: { email: user.email },
     });
   } catch (error) {
-    console.error("Error in logInController:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    next(error);
   }
 };
 
@@ -55,11 +58,7 @@ export const getAllUsers = async (req, res) => {
       users,
     });
   } catch (error) {
-    console.error("Error fetching users:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+    next(error);
   }
 };
 export const logOutController = () => (res, req) => {
@@ -67,8 +66,8 @@ export const logOutController = () => (res, req) => {
     .status(200)
     .cookie("token", "", {
       expire: new Date(Date.now()),
-      sameSite :process.env.NODE_ENV=="Development" ? " lax": "none",
-      secure:process.env.NODE_ENV=="Development" ? false:true,
+      sameSite: process.env.NODE_ENV == "Development" ? " lax" : "none",
+      secure: process.env.NODE_ENV == "Development" ? false : true,
     })
     .json({
       success: true,
@@ -77,7 +76,6 @@ export const logOutController = () => (res, req) => {
 };
 
 export const getMyProfile = async (res, req) => {
-  
   res.status(200).json({
     success: true,
     user: req.user,
