@@ -2,6 +2,7 @@ import { Task } from "../models/task.models.js";
 import Errorhandler from "../utils/errorHandler.js";
 
 export const createPost = async (req, res, next) => {
+ try {
   const { title, description } = req.body;
 
   await Task.create({
@@ -14,8 +15,12 @@ export const createPost = async (req, res, next) => {
     success: true,
     message: "Task created successfully",
   });
+ } catch (error) {
+  next(error)
+ }
 };
-export const readPost =async (req, res, next) => {
+export const readPost = async (req, res, next) => {
+ try {
   const userId = req.user._id;
   const tasks = await Task.find({ user: userId });
 
@@ -23,14 +28,16 @@ export const readPost =async (req, res, next) => {
     success: true,
     tasks,
   });
+ } catch (error) {
+  next(error);
+ }
 };
 
-
-
 export const updatePost = async (req, res) => {
+ try {
   const { id } = req.params;
   const task = await Task.findById(id);
-  if (!task) return next(new Errorhandler("invalid id",400))
+  if (!task) return next(new Errorhandler("invalid id", 400));
   task.isCompleted = !task.isCompleted;
   await task.save();
 
@@ -38,11 +45,14 @@ export const updatePost = async (req, res) => {
     success: true,
     message: "update post successfully",
   });
+ } catch (error) {
+  next(error)
+ }
 };
 export const deletePost = async () => {
   const { id } = req.params;
   const task = await Task.findById(id);
-  if (!task) return next(new Errorhandler("invalid id",400))
+  if (!task) return next(new Errorhandler("invalid id", 400));
   await task.deleteOne();
 
   res.status(200).json({
