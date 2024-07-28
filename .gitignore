@@ -1,0 +1,14 @@
+/node_modules
+/data/.env
+
+
+echo "# mern-crud" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/jahidulhasan1/mern-crud.git
+git push -u origin main
+
+  git config --global "thejhr20@gmail.com"
+  git config --global "jahidulhasan1"
