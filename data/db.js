@@ -6,5 +6,5 @@ export const dbConnect =()=>  mongoose.connect(process.env.MONGOURI,{
 }).then(()=>{
     console.log("connected to mongodb");
 }).catch((err)=>{
-console.log(err);
+console.log("error from db",err);
 });
