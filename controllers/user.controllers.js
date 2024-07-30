@@ -75,8 +75,12 @@ export const logOutController = () => (req, res) => {
 };
 
 export const getMyProfile = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ success: false, message: "User not authenticated" });
+  }
   await res.status(200).json({
     success: true,
     user: req.user,
   });
 };
+
