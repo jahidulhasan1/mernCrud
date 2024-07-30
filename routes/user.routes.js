@@ -11,11 +11,19 @@ import { isAuthenTicated } from "../middleware/auth.middleware.js";
 const router = express.Router();
 
 // register
-router.get("/all", getAllUsers);
+
 router.post("/signup", signUpController);
 router.post("/login", logInController);
 router.post("/logout", logOutController);
 
-router.get("/me", isAuthenTicated, getMyProfile);
+router.get("/me", isAuthenTicated, async (req, res, next) => {
+  try {
+    getMyProfile(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/all", isAuthenTicated, getAllUsers);
 
 export default router;

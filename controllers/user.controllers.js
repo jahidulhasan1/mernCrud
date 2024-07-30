@@ -75,8 +75,8 @@ export const logOutController = () => (res, req) => {
     });
 };
 
-export const getMyProfile = async (res, req) => {
-  res.status(200).json({
+export const getMyProfile = async (req, res) => {
+  await res.status(200).json({
     success: true,
     user: req.user,
   });
