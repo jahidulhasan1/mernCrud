@@ -24,6 +24,6 @@ router.get("/me", isAuthenTicated, async (req, res, next) => {
   }
 });
 
-router.get("/all", isAuthenTicated, getAllUsers);
+router.get("/all",isAuthenTicated, getAllUsers);
 
 export default router;

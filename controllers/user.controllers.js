@@ -61,9 +61,8 @@ export const getAllUsers = async (req, res) => {
     next(error);
   }
 };
-export const logOutController = () => (res, req) => {
-  res
-    .status(200)
+export const logOutController = () => (req, res) => {
+  res.status(200)
     .cookie("token", "", {
       expire: new Date(Date.now()),
       sameSite: process.env.NODE_ENV == "Development" ? " lax" : "none",
